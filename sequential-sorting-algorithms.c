@@ -17,51 +17,56 @@ than your sorting algorithms.*/
 // I will choose to do this with doubles
 // A double is a floating point number with high accuracy (up to 15 d.p)
 
-int merge_sort(double arr[], size_t size)
+
+void merge(double arr[], size_t array_size, size_t left, size_t middle, size_t right)
 {
-    // Divide into two sub arrays
-    size_t half_size = size/2;
-    printf("%lu\n", half_size);
-    double L[size - half_size];
-    double R[half_size];
-    // Traverse array and add to new arrays
-    size_t l = 0;
-    size_t r = 0;
-    for (size_t i = 0; i < size; i++)
+    // Make a new array to put merged array in
+    double temp[array_size];
+
+    // Middle is the index at the end of the left side of the merge
+    size_t l_index = 0;
+    size_t r_index = middle+1;
+    size_t count_index = 0;
+
+    while (l_index <= middle && r_index <= right)
     {
-        if (i <= half_size)
+        if (arr[l_index] < arr[r_index])
         {
-            L[l] = arr[i];
-            l += 1;
+            temp[count_index] = arr[l_index];
+            l_index++;
         }
         else
         {
-            R[r] = arr[i];
-            r += 1;
+            temp[count_index] = arr[r_index];
+            r_index++;
         }
-    }
-    printf("Elements in Left: ");
-    for (int i = 0; i <= half_size; i++) {
-        printf("%f ", L[i]);
-    }
-    printf("Elements in Right: ");
-    for (int i = 0; i < half_size; i++) {
-        printf("%f ", R[i]);
+        count_index++;
     }
 
-    return 0;
+    // Left sub array always bigger than right sub array
+    // So add any leftover in left
+    while (l_index <= middle)
+    {
+        temp[count_index] = arr[l_index];
+        l_index++;
+        count_index++;
+    }
+
+
+}
+
+void sort(double arr[], size_t left, size_t right)
+{
+    size_t middle = (left + right) / 2;
+    size_t array_size = right + 1;
+    merge(arr, array_size, left, middle, rigth);
 }
 
 
-// Arrays are made with the syntax - 'type' name[length]
-// start with length of 5
-// Use the initialisation technique given in the book from getting started
-// Each item in the array is set individually with any number I choose
 
 int main()
 {
     double unsorted[3] = {0.0, 2.0, 5.0};
-    merge_sort(unsorted, 3);
 }
 
 
