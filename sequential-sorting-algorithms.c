@@ -17,51 +17,39 @@ than your sorting algorithms.*/
 // I will choose to do this with doubles
 // A double is a floating point number with high accuracy (up to 15 d.p)
 
-int merge_sort(double arr[], size_t size)
+// For both of these instead of passing the array we pass the start and end indexes of the array
+
+// Merges two sub arrays back together
+void merge(double arr[], size_t len, size_t left, size_t middle, size_t right)
 {
-    // Divide into two sub arrays
-    size_t half_size = size/2;
-    printf("%lu\n", half_size);
-    double L[size - half_size];
-    double R[half_size];
-    // Traverse array and add to new arrays
-    size_t l = 0;
-    size_t r = 0;
-    for (size_t i = 0; i < size; i++)
+
+}
+
+// Takes the array splits it in two and calls itself on each half of the array
+void mergeSort(double arr[], size_t len, size_t start, size_t end)
+{
+    if (len <= 1)
     {
-        if (i <= half_size)
-        {
-            L[l] = arr[i];
-            l += 1;
-        }
-        else
-        {
-            R[r] = arr[i];
-            r += 1;
-        }
-    }
-    printf("Elements in Left: ");
-    for (int i = 0; i <= half_size; i++) {
-        printf("%f ", L[i]);
-    }
-    printf("Elements in Right: ");
-    for (int i = 0; i < half_size; i++) {
-        printf("%f ", R[i]);
+        return;
     }
 
-    return 0;
+    size_t mid = len / 2;
+    size_t left_size = mid;
+    size_t right_size = len - mid;
+
+    mergeSort(arr, len, start, mid);
+    mergeSort(arr, len, mid, end);
+
+    merge(arr, len, start, mid, end);
 }
 
 
-// Arrays are made with the syntax - 'type' name[length]
-// start with length of 5
-// Use the initialisation technique given in the book from getting started
-// Each item in the array is set individually with any number I choose
-
 int main()
 {
-    double unsorted[3] = {0.0, 2.0, 5.0};
-    merge_sort(unsorted, 3);
+    double unsorted[5] = {5.0, 4.0, 3.0, 2.0, 1.0};
+    mergeSort(unsorted, 5, 0, 4);
+
+    return 0;
 }
 
 
