@@ -17,56 +17,39 @@ than your sorting algorithms.*/
 // I will choose to do this with doubles
 // A double is a floating point number with high accuracy (up to 15 d.p)
 
+// For both of these instead of passing the array we pass the start and end indexes of the array
 
-void merge(double arr[], size_t array_size, size_t left, size_t middle, size_t right)
+// Merges two sub arrays back together
+void merge(double arr[], size_t len, size_t left, size_t middle, size_t right)
 {
-    // Make a new array to put merged array in
-    double temp[array_size];
-
-    // Middle is the index at the end of the left side of the merge
-    size_t l_index = 0;
-    size_t r_index = middle+1;
-    size_t count_index = 0;
-
-    while (l_index <= middle && r_index <= right)
-    {
-        if (arr[l_index] < arr[r_index])
-        {
-            temp[count_index] = arr[l_index];
-            l_index++;
-        }
-        else
-        {
-            temp[count_index] = arr[r_index];
-            r_index++;
-        }
-        count_index++;
-    }
-
-    // Left sub array always bigger than right sub array
-    // So add any leftover in left
-    while (l_index <= middle)
-    {
-        temp[count_index] = arr[l_index];
-        l_index++;
-        count_index++;
-    }
-
 
 }
 
-void sort(double arr[], size_t left, size_t right)
+// Takes the array splits it in two and calls itself on each half of the array
+void mergeSort(double arr[], size_t len, size_t start, size_t end)
 {
-    size_t middle = (left + right) / 2;
-    size_t array_size = right + 1;
-    merge(arr, array_size, left, middle, rigth);
-}
+    if (len <= 1)
+    {
+        return;
+    }
 
+    size_t mid = len / 2;
+    size_t left_size = mid;
+    size_t right_size = len - mid;
+
+    mergeSort(arr, len, start, mid);
+    mergeSort(arr, len, mid, end);
+
+    merge(arr, len, start, mid, end);
+}
 
 
 int main()
 {
-    double unsorted[3] = {0.0, 2.0, 5.0};
+    double unsorted[5] = {5.0, 4.0, 3.0, 2.0, 1.0};
+    mergeSort(unsorted, 5, 0, 4);
+
+    return 0;
 }
 
 
