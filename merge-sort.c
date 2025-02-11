@@ -17,30 +17,71 @@ than your sorting algorithms.*/
 // I will choose to do this with doubles
 // A double is a floating point number with high accuracy (up to 15 d.p)
 
-// For both of these instead of passing the array we pass the start and end indexes of the array
+// For both of these instead of passing just the array, pass the array, size of array, and start and end pointers for array
 
 // Merges two sub arrays back together
-void merge(double arr[], size_t len, size_t left, size_t middle, size_t right)
+void merge(double arr[], size_t len_arr, size_t left, size_t middle, size_t right)
 {
+    // Left half is from start to middle-1
+    size_t left_size = middle - left;
+    // Right half is from middle to end
+    size_t right_size = right - middle;
 
+    // Copy each half of array to new arrays
+    double left_arr[left_size];
+    double right_arr[right_size];
+
+    for (size_t i = 0; i < left_size; i++)
+    {
+        left_arr[i] = arr[left + i];
+    }
+    for (size_t i = 0; i < right_size; i++)
+    {
+        right_arr[i] = arr[middle + i];
+    }
+
+
+
+    size_t i = 0;
+    size_t j = 0;
+    size_t k = left;
+
+    while (i <= left_size && j <= right_size)
+    {
+        if (left_arr[i] <= right_arr[j])
+        {
+            arr[k] = left_arr[i];
+            i++;
+        }
+        else
+        {
+            arr[k] = right_arr[j];
+            j++;
+        }
+    }
 }
 
 // Takes the array splits it in two and calls itself on each half of the array
 void mergeSort(double arr[], size_t len, size_t start, size_t end)
 {
-    if (len <= 1)
+    if (start-end <= 1)
     {
-        return;
     }
+    else
+    {
+        size_t mid = len / 2;
 
-    size_t mid = len / 2;
-    size_t left_size = mid;
-    size_t right_size = len - mid;
+        // Left half is from start to middle-1
 
-    mergeSort(arr, len, start, mid);
-    mergeSort(arr, len, mid, end);
 
-    merge(arr, len, start, mid, end);
+        // Right half is from middle to end
+
+
+        mergeSort(arr, len, start, mid-1);
+        mergeSort(arr, len, mid, end);
+
+        merge(arr, len, start, mid, end);
+    }
 }
 
 
