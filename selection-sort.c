@@ -1,5 +1,6 @@
 # include <stdlib.h>
 # include <stdio.h>
+# include <time.h>
 
 int findMin(int a[], int length, int i) {
     int m = i;
@@ -27,9 +28,23 @@ void selectionSort(int a[], int length) {
 }
 
 int main() {
-    int list[10] = {3, 4, 6, 7 ,9, 0, 1, 5, 2, 8};
-    selectionSort(list, 10);
-    for (int i = 0; i < 10; i++){
-        printf("%d ", list[i]);
+    int list_sizes[5] = {10, 100, 1000, 10000, 100000};
+
+    for (int i = 0; i < 5; i++){
+        int list[list_sizes[i]];
+
+        for (int i = 0; i < list_sizes[i]; i++) {
+            list[i] = rand();
+        }
+        clock_t begin = clock();
+
+        selectionSort(list, list_sizes[i]);
+
+        clock_t end = clock();
+        double time_spent = (double)(end-begin) / CLOCKS_PER_SEC;
+
+        printf("Sort took %f seconds to execute on list of size %d\n", time_spent, list_sizes[i]);
     }
+
+    return 0;
 }
