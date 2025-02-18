@@ -22,75 +22,69 @@ than your sorting algorithms.*/
 // Merges two sub arrays back together
 void merge(double arr[], size_t len_arr, size_t left, size_t middle, size_t right)
 {
-    // Left half is from start to middle-1
-    size_t left_size = middle - left;
-    // Right half is from middle to end
-    size_t right_size = right - middle;
+    int left_size = middle - left + 1;
+    int right_size = right - middle;
 
-    // Copy each half of array to new arrays
     double left_arr[left_size];
     double right_arr[right_size];
 
-    for (size_t i = 0; i < left_size; i++)
-    {
-        left_arr[i] = arr[left + i];
+    // copy array to these sub arrays
+    for (size_t i = left; i < left_size; i++){
+        left_arr[i-left] = arr[i];
     }
-    for (size_t i = 0; i < right_size; i++)
-    {
-        right_arr[i] = arr[middle + i];
+    for (size_t i = middle + 1; i < right; i++){
+        right_arr[i-right] = arr[i];
     }
 
-
-
-    size_t i = 0;
-    size_t j = 0;
+    size_t left_i = 0;
+    size_t right_i = 0;
     size_t k = left;
 
-    while (i <= left_size && j <= right_size)
-    {
-        if (left_arr[i] <= right_arr[j])
-        {
-            arr[k] = left_arr[i];
-            i++;
+    while (left_i < left_size && right_i < right_size){
+        if (left_arr[left_i] <= right_arr[right_i]){
+            arr[k] = left_arr[left_i];
+            left_i++;
         }
-        else
-        {
-            arr[k] = right_arr[j];
-            j++;
+        else {
+            arr[k] = right_arr[right_i];
+            right_i++;
         }
     }
+
+    // ADD ANYTHING LEFT
 }
 
 // Takes the array splits it in two and calls itself on each half of the array
-void mergeSort(double arr[], size_t len, size_t start, size_t end)
-{
-    if (start-end <= 1)
-    {
+// Recursive part
+// Start and end are the inclusive indexes of where merge sort is called
+void mergeSort(double arr[], int arr_size, int start, int end){
+    // Base case
+    if (start == end){
+
     }
-    else
-    {
-        size_t mid = len / 2;
+    else {
+    int half_size = (start-end) / 2;
+    // make sure half_size is >= 0
+    if (half_size < 0){
+        half_size = 0;
+    }
 
-        // Left half is from start to middle-1
+    int middle = start+half_size;
 
+    mergeSort(arr, arr_size, start, middle);
+    printf("Called Merge Sort with array, %d, %d, %d\n", arr_size, start, middle);
+    mergeSort(arr, arr_size, middle+1, end);
+    printf("Called Merge Sort with array, %d, %d, %d\n", arr_size, middle+1, end);
 
-        // Right half is from middle to end
-
-
-        mergeSort(arr, len, start, mid-1);
-        mergeSort(arr, len, mid, end);
-
-        merge(arr, len, start, mid, end);
+    merge(arr, arr_size, start, middle, end);
+    printf("Called Merge with array, %d, %d, %d, %d\n", arr_size, start, middle, end);
     }
 }
 
 
-int main()
-{
-    double unsorted[5] = {5.0, 4.0, 3.0, 2.0, 1.0};
-    mergeSort(unsorted, 5, 0, 4);
-
-    return 0;
+int main() {
+    int test = 5 / 2;
+    printf("test = %d\n", test);
 }
 
 
