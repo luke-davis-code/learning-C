@@ -12,44 +12,83 @@ than your sorting algorithms.*/
 # include <stdlib.h>
 #include <stdio.h>
 
-// MERGE SORT (recursive)
+// Merge two subarrays of a
+// a[l..m] is merged with a[m+1..n]
+void merge(double arr[], int len, int l, int m, int n){
+    // copy arrays to reference
+    int left_size = m - l + 1;
+    double left_arr[left_size];
 
-// I will choose to do this with doubles
-// A double is a floating point number with high accuracy (up to 15 d.p)
+    int right_size = n - (m+1) + 1;
+    double right_arr[right_size];
 
-// For both of these instead of passing the array we pass the start and end indexes of the array
-
-// Merges two sub arrays back together
-void merge(double arr[], size_t len, size_t left, size_t middle, size_t right)
-{
-
-}
-
-// Takes the array splits it in two and calls itself on each half of the array
-void mergeSort(double arr[], size_t len, size_t start, size_t end)
-{
-    if (len <= 1)
-    {
-        return;
+    for (int i = 0; i < left_size; i++) {
+        left_arr[i] = arr[l + i];
+    }
+    for (int i = 0; i < right_size; i++) {
+        right_arr[i] = arr[m + 1 + i];
     }
 
-    size_t mid = len / 2;
-    size_t left_size = mid;
-    size_t right_size = len - mid;
+    int left = 0;
+    int right = 0;
+    int p = l;
+    while (left < left_size && right < right_size) {
+        if (left_arr[left] <= right_arr[right]) {
+            arr[p] = left_arr[left];
+            left++;
+        }
+        else {
+            arr[p] = right_arr[right];
+            right++;
+        }
+        p++;
+    }
 
-    mergeSort(arr, len, start, mid);
-    mergeSort(arr, len, mid, end);
+    // Add leftover elements
+    while (left < left_size) {
+        arr[p] = left_arr[left];
+        p++;
+        left++;
+    }
+    while (right < right_size) {
+        arr[p] = right_arr[right];
+        p++;
+        right++;
+    }
+}
 
-    merge(arr, len, start, mid, end);
+// mergesort the sub-array of a from a[l] up to a[m]
+void mergeSort(double arr[], int len, int l, int m) {
+    if (l != m) {
+        int middle = (l + m) / 2;
+        mergeSort(arr, len, l, middle);
+        mergeSort(arr, len, middle+1, m);
+
+        merge(arr, len, l, middle, m);
+    }
+}
+
+void isSorted(double arr[], int len) {
+    int sorted = 1;
+    for (int i = 1; i < len; i++) {
+        if (arr[i] < arr[i-1]) {
+            sorted = 0;
+        }
+    }
+
+    if (sorted == 1) {
+        printf("YES\n");
+    }
+    else {
+        printf("NO\n");
+    }
 }
 
 
-int main()
-{
-    double unsorted[5] = {5.0, 4.0, 3.0, 2.0, 1.0};
-    mergeSort(unsorted, 5, 0, 4);
-
-    return 0;
+int main() {
+    double test_arr[5] = {3.0, 4.0, 1.0, 2.0, 4.0};
+    mergeSort(test_arr, 5, 0, 4);
+    isSorted(test_arr, 5);
 }
 
 
